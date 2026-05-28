@@ -85,14 +85,7 @@ export default function AuthPage() {
             </p>
           </div>
 
-          {/* Demo credentials hint */}
-          {mode === 'login' && (
-            <div style={styles.demoHint}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                Demo: <code style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)' }}>admin@projectflow.com</code> / <code style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)' }}>admin123</code>
-              </span>
-            </div>
-          )}
+
 
           <form onSubmit={handleSubmit} style={styles.form}>
             {mode === 'register' && (
