@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build: ./microservices/auth-service
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - JWT_SECRET=projectflow_secret_2026
+      - FRONTEND_URL=http://localhost:5173
+      - NODE_ENV=production
+    volumes:
+      - auth-data:/app/data
+    networks:
+      - projectflow-network
+
+  projects-service:
+    build: ./microservices/projects-service
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - JWT_SECRET=projectflow_secret_2026
+      - FRONTEND_URL=http://localhost:5173
+      - NODE_ENV=production
+    volumes:
+      - projects-data:/app/data
+    networks:
+      - projectflow-network
+
+  tasks-service:
+    build: ./microservices/tasks-service
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - JWT_SECRET=projectflow_secret_2026
+      - FRONTEND_URL=http://localhost:5173
+      - NODE_ENV=production
+    volumes:
+      - tasks-data:/app/data
+    networks:
+      - projectflow-network
+
+  notifications-service:
+    build: ./microservices/notifications-service
+    ports:
+      - "3004:3004"
+    environment:
+      - PORT=3004
+      - JWT_SECRET=projectflow_secret_2026
+      - FRONTEND_URL=http://localhost:5173
+      - NODE_ENV=production
+    networks:
+      - projectflow-network
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - auth-service
+      - projects-service
+      - tasks-service
+      - notifications-service
+    networks:
+      - projectflow-network
+
+volumes:
+  auth-data:
+  projects-data:
+  tasks-data:
+
+networks:
+  projectflow-network:
+    driver: bridge
