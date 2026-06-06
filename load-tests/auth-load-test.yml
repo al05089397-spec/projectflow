@@ -1,0 +1,32 @@
+config:
+  target: "http://localhost:3001"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: "Carga normal"
+    - duration: 30
+      arrivalRate: 20
+      name: "Carga alta"
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - name: "Login de usuarios"
+    flow:
+      - post:
+          url: "/api/auth/login"
+          json:
+            email: "test@projectflow.com"
+            password: "Test1234!"
+          capture:
+            - json: "$.token"
+              as: "authToken"
+  - name: "Registro de usuario"
+    flow:
+      - post:
+          url: "/api/auth/register"
+          json:
+            name: "Usuario Carga"
+            email: "carga{{ $randomNumber(1, 9999) }}@test.com"
+            password: "Test1234!"
